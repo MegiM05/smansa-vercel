@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Pendaftaran Siswa - SMA NEGERI 1 BURU</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa; /* Latar belakang putih pudar */
+            color: #333; /* Teks gelap */
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #ffffff; /* Header putih */
+            color: #2c3e50; /* Teks header gelap */
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        /* Konten utama yang di tengah */
+        .main-content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        /* Bagian Profil Kepala Sekolah */
+        .headmaster-profile {
+            margin-bottom: 50px;
+        }
+
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2c3e50; /* Teks gelap */
+            margin-bottom: 15px;
+        }
+
+        .welcome-message {
+            font-size: 16px;
+            color: #495057; /* Abu-abu gelap */
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Judul Daftar Kelulusan */
+        .list-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50; /* Teks gelap */
+            margin-bottom: 25px;
+        }
+
+        /* Kontainer untuk daftar */
+        .list-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff; /* Latar kontainer putih */
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+
+        /* --- Style Tema Terang untuk Pencarian & Accordion --- */
+        .search-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #95a5a6;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #e1e5e9;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #ffffff; /* Latar input putih */
+            color: #333; /* Teks input gelap */
+        }
+        
+        #search-input::placeholder {
+            color: #95a5a6;
+        }
+
+        #search-input:focus {
+            border-color: #3498db;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #e9ecef; /* Garis pemisah terang */
+            margin-bottom: 5px;
+        }
+
+        .accordion-header {
+            background-color: #f8f9fa; /* Latar header terang */
+            color: #2c3e50; /* Teks header gelap */
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background-color: #e9ecef; /* Efek hover terang */
+        }
+
+        .accordion-header .icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active .icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            padding: 0 15px;
+            background-color: #ffffff; /* Konten putih */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .accordion-content p {
+            padding: 15px 0;
+            border-top: 1px dashed #e1e5e9; /* Garis putus-putus */
+            color: #495057; /* Teks konten */
+        }
+        
+        .accordion-content p strong {
+            color: #2c3e50; /* Label (NISN, Status) gelap */
+            min-width: 70px;
+            display: inline-block;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-lulus {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-tidak-lulus {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        #message-info {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Selamat Datang di SMA NEGERI 1 BURU</h1>
+    </header>
+
+    <div class="main-content">
+        <div class="headmaster-profile">
+            <img src="https://ui-avatars.com/api/?name=Neneng+Yulia&background=e8f7ff&color=2c3e50&size=130&bold=true" alt="Kepala Sekolah Neneng yulia S.Pd" class="profile-pic">
+            <h2 class="profile-name">Neneng yulia S.Pd</h2>
+            <p class="welcome-message">
+                Selamat datang di SMA NEGERI 1 BURU! Kami sangat senang dan bangga menyambut kalian sebagai bagian dari keluarga besar SMA NEGERI 1 BURU. Kami berharap kalian dapat menjadi bagian dari komunitas yang positif dan produktif, serta mencapai kesuksesan akademik dan pribadi.
+            </p>
+        </div>
+
+        <h1 class="list-title">Daftar Kelulusan Siswa</h1>
+
+        <div class="list-container">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-input" placeholder="Cari nama Anda...">
+            </div>
+
+            <div id="accordion-container">
+                </div>
+            
+            <p id="message-info">Memuat data...</p>
+        </div>
+    </div>
+
+    <script>
+        // --- TIDAK ADA PERUBAHAN PADA JAVASCRIPT ---
+        // Logika untuk fetch data, render accordion, dan pencarian 
+        // tetap sama persis seperti sebelumnya.
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionContainer = document.getElementById('accordion-container');
+            const searchInput = document.getElementById('search-input');
+            const messageInfo = document.getElementById('message-info');
+            let allSiswa = [];
+
+            // 1. Ambil data dari server
+            fetch('/api/siswa')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil data dari server');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    allSiswa = data.siswa;
+                    if(allSiswa.length > 0) {
+                        renderAccordion(allSiswa);
+                        messageInfo.style.display = 'none';
+                    } else {
+                        messageInfo.textContent = 'Data siswa tidak ditemukan.';
+                        messageInfo.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    messageInfo.textContent = 'Terjadi kesalahan saat memuat data.';
+                    messageInfo.style.display = 'block';
+                });
+
+            // 2. Fungsi untuk menampilkan data ke accordion
+            function renderAccordion(siswaList) {
+                accordionContainer.innerHTML = '';
+                
+                if (siswaList.length === 0) {
+                    messageInfo.textContent = 'Tidak ada siswa yang cocok dengan pencarian Anda.';
+                    messageInfo.style.display = 'block';
+                    return;
+                }
+                
+                messageInfo.style.display = 'none';
+
+                siswaList.forEach(siswa => {
+                    const statusClass = siswa.status === 'lulus' ? 'status-lulus' : 'status-tidak-lulus';
+                    const statusText = siswa.status === 'lulus' ? 'Lulus' : 'Tidak Lulus';
+
+                    const item = document.createElement('div');
+                    item.className = 'accordion-item';
+
+                    item.innerHTML = `
+                        <button class="accordion-header">
+                            <span>${siswa.nama}</span>
+                            <i class="fas fa-chevron-down icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p><strong>NISN:</strong> ${siswa.nisn}</p>
+                            <p><strong>Status:</strong> <span class="status ${statusClass}">${statusText}</span></p>
+                        </div>
+                    `;
+                    
+                    accordionContainer.appendChild(item);
+                });
+                
+                // Tambahkan event listener untuk setiap accordion header
+                attachAccordionListeners();
+            }
+            
+            // 3. Fungsi untuk menambahkan listener klik pada accordion
+            function attachAccordionListeners() {
+                const headers = document.querySelectorAll('.accordion-header');
+                headers.forEach(header => {
+                    header.addEventListener('click', function() {
+                        headers.forEach(otherHeader => {
+                            if (otherHeader !== this) {
+                                otherHeader.classList.remove('active');
+                                otherHeader.nextElementSibling.style.maxHeight = null;
+                            }
+                        });
+
+                        this.classList.toggle('active');
+                        const content = this.nextElementSibling;
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                        }
+                    });
+                });
+            }
+
+            // 4. Fungsi untuk pencarian
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                const filteredSiswa = allSiswa.filter(siswa => 
+                    siswa.nama.toLowerCase().includes(searchTerm)
+                );
+                
+                renderAccordion(filteredSiswa);
+            });
+
+        });
+    </script>
+
+</body>
+</html>

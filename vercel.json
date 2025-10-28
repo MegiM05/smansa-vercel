@@ -1,0 +1,41 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/public/index.html"
+    },
+    {
+      "source": "/index",
+      "destination": "/public/index.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/public/login.html"
+    },
+    {
+      "source": "/event",
+      "destination": "/public/event.html"
+    },
+    {
+      "source": "/settings",
+      "destination": "/public/settings.html"
+    },
+    {
+      "source": "/view-daftar",
+      "destination": "/public/view-daftar.html"
+    },
+    {
+      "source": "/uploads/(.*)",
+      "destination": "/public/uploads/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/settings",
+      "permanent": false
+    }
+  ]
+}

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita & Event - SMA NEGERI 1 BURU</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Variabel dari index.html */
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Header Sederhana */
+        .simple-header {
+            background-color: #ffffff;
+            color: var(--secondary);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .simple-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .simple-header p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        /* Kontainer Utama (Lebar 900px) */
+        .content-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+        
+        /* Kontainer (Lebar 1200px, untuk footer) */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        #message-info {
+            text-align: center;
+            color: var(--gray);
+            font-size: 1.1rem;
+            padding: 40px 0;
+        }
+        
+        /* Desain Kartu */
+        .event-card-list {
+            display: grid;
+            gap: 25px;
+        }
+        
+        .event-card {
+            background: #ffffff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            transition: var(--transition);
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .event-card-image {
+            flex-shrink: 0;
+            width: 130px;
+            height: 130px;
+        }
+        
+        .event-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .event-card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .event-card-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 0 0 5px 0;
+        }
+        
+        .event-date {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 500;
+        }
+        
+        .event-card-content p {
+            font-size: 0.95rem;
+            color: var(--dark);
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .btn-read-more {
+            background-color: var(--secondary);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            align-self: flex-start;
+        }
+        
+        .btn-read-more:hover {
+            background-color: #1a2530;
+        }
+        
+        /* CSS Modal */
+        .berita-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .berita-modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .berita-modal-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .berita-modal-header h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin: 0;
+        }
+        
+        .berita-modal-header .event-date {
+             margin-bottom: 0;
+             font-size: 1rem;
+        }
+
+        .modal-close-btn {
+            color: var(--gray);
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close-btn:hover,
+        .modal-close-btn:focus {
+            color: var(--dark);
+            text-decoration: none;
+        }
+        
+        .berita-modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            line-height: 1.8;
+            color: var(--dark);
+        }
+        
+        .berita-modal-body img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+        }
+        
+        .berita-modal-body p {
+            margin-bottom: 1.5em;
+        }
+        
+        /* --- CSS FOOTER (Diambil dari index.html) --- */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 25px;
+            margin-top: auto; /* Mendorong footer ke bawah */
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-col p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 18px;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        /* --- Akhir CSS Footer --- */
+
+        
+        /* Responsif */
+        @media (max-width: 600px) {
+            .simple-header h1 {
+                font-size: 1.6rem;
+            }
+            .simple-header p {
+                font-size: 0.9rem;
+            }
+            .content-container {
+                margin: 25px auto;
+            }
+            
+            .event-card {
+                flex-direction: column;
+            }
+            
+            .event-card-image {
+                width: 100%;
+                height: 180px;
+            }
+            
+            .event-card-content h3 {
+                font-size: 1.15rem;
+            }
+            
+            .event-card-content p {
+                font-size: 0.9rem;
+                -webkit-line-clamp: 3;
+            }
+            
+            .berita-modal-header h2 {
+                font-size: 1.4rem;
+            }
+            .berita-modal-header, .berita-modal-body {
+                padding: 20px;
+            }
+        }
+        
+        /* Responsif untuk Footer */
+        @media (max-width: 576px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <header class="simple-header">
+        <h1>Event & Berita</h1>
+        <p>SMA Negeri 1 Buru</p>
+    </header>
+
+    <div class="content-container">
+        
+        <div class="event-card-list" id="event-container">
+            </div>
+        
+        <p id="message-info">Memuat data berita...</p>
+        
+    </div>
+
+    <div class="berita-modal" id="berita-modal">
+        <div class="berita-modal-content">
+            <div class="berita-modal-header">
+                <span class="modal-close-btn" id="modal-close-btn">&times;</span>
+                <h2 id="modal-title">Judul Berita</h2>
+                <span class="event-date" id="modal-date">Tanggal</span>
+            </div>
+            <div class="berita-modal-body">
+                <img id="modal-image" src="" alt="Gambar Berita">
+                <div id="modal-content">
+                    <p>Konten lengkap berita akan muncul di sini.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Tentang Kami</h3>
+                    <p>SMA Negeri 1 Buru adalah sekolah unggulan yang berkomitmen untuk mencetak generasi penerus bangsa yang berkarakter, berprestasi, dan berwawasan global melalui pendidikan berkualitas.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Link Cepat</h3>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-chevron-right"></i> Beranda</a></li>
+                        <li><a href="/event"><i class="fas fa-chevron-right"></i> Berita & Event</a></li>
+                        <li><a href="/view-daftar"><i class="fas fa-chevron-right"></i> Pengumuman Kelulusan</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Profil Sekolah</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kontak Kami</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Kontak</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Jl. Pendidikan No. 123, Buru</a></li>
+                        <li><a href="#"><i class="fas fa-phone"></i> (021) 1234-5678</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> info@sman1buru.sch.id</a></li>
+                        <li><a href="#"><i class="fas fa-clock"></i> Senin - Jumat: 07.00 - 16.00</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 SMA NEGERI 1 BURU. Semua Hak Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        let allBeritaData = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const eventContainer = document.getElementById('event-container');
+            const messageInfo = document.getElementById('message-info');
+
+            const modal = document.getElementById('berita-modal');
+            const closeModalBtn = document.getElementById('modal-close-btn');
+            
+            const modalTitle = document.getElementById('modal-title');
+            const modalDate = document.getElementById('modal-date');
+            const modalImage = document.getElementById('modal-image');
+            const modalContent = document.getElementById('modal-content');
+
+            function formatDate(isoString) {
+                if (!isoString) return 'Tanggal tidak diketahui';
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = new Date(isoString).toLocaleDateString('id-ID', options);
+                return `Diposting: ${formattedDate}`;
+            }
+
+            function openModal(id) {
+                const berita = allBeritaData.find(b => b.id === parseInt(id));
+                if (!berita) return;
+
+                modalTitle.textContent = berita.judul;
+                modalDate.textContent = formatDate(berita.tanggal);
+                modalImage.src = berita.imageUrl;
+                modalImage.alt = berita.judul;
+                
+                modalContent.innerHTML = berita.konten_lengkap.replace(/\n/g, '<br>');
+
+                modal.style.display = 'flex';
+                document.body.classList.add('modal-open');
+            }
+
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            eventContainer.addEventListener('click', function(event) {
+                if (event.target.classList.contains('btn-read-more')) {
+                    event.preventDefault();
+                    const id = event.target.getAttribute('data-id');
+                    openModal(id);
+                }
+            });
+
+            fetch('/api/berita')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil data dari server');
+                    }
+                    return response.json();
+                })
+                .then(beritaList => {
+                    allBeritaData = beritaList; 
+                    
+                    if (allBeritaData.length === 0) {
+                        messageInfo.textContent = 'Belum ada berita atau event yang diposting.';
+                    } else {
+                        messageInfo.style.display = 'none';
+                        eventContainer.innerHTML = ''; 
+
+                        allBeritaData.reverse(); 
+                        
+                        allBeritaData.forEach(berita => {
+                            const card = document.createElement('div');
+                            card.className = 'event-card';
+                            
+                            card.innerHTML = `
+                                <div class="event-card-image">
+                                    <img src="${berita.imageUrl}" alt="${berita.judul}">
+                                </div>
+                                <div class="event-card-content">
+                                    <h3>${berita.judul}</h3>
+                                    <span class="event-date">${formatDate(berita.tanggal)}</span>
+                                    <p>${berita.deskripsi}</p>
+                                    
+                                    <button class="btn-read-more" data-id="${berita.id}">
+                                        Baca Selengkapnya
+                                    </button>
+                                </div>
+                            `;
+                            eventContainer.appendChild(card);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    messageInfo.textContent = 'Terjadi kesalahan saat memuat data. Coba lagi nanti.';
+                });
+        });
+    </script>
+</body>
+</html>
